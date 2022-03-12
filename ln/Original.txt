@@ -1,0 +1,108 @@
+import numpy as np
+Lalpha=np.arange(0.1,1,0.1)
+Lcn=np.arange(0.1,0.501,0.1)
+Lcrcn=np.arange(0.1,1.3,0.1)
+Ltaucn=np.arange(0.02,0.13,0.04)
+print(Lalpha)
+print(Lcn)
+print(Lcrcn)
+print(Ltaucn)
+
+import pandas as pd
+import numpy as np
+a_val=[]
+cn_val=[]
+cr_val=[]
+tau_val=[]
+t_val=[]
+pn_val=[]
+pr_val=[]
+Dn_val=[]
+Dr_val=[]
+Pi_val=[]
+E_val=[]
+CS_val=[]
+W_val=[]
+Optimal=[]
+data={}
+
+def W_pint(tn,tr,a,cn,cr,tau):
+    pn=(1+cn-tn)/2
+    pr=(a^3 + 2 * cr * tr - a^2 * (1 + tr) + a * (-cr * (1 + cn + tn) + tr))/(2 * (-1 + a)* a - 2* cr)
+    Dn=1-(pn+tn-(pr+tr))/(1-a)
+    Dr=(a*(pn+tn)-(pr+tr))/(a-pow(a,2)) 
+    Pi=(pn-cn)*Dn+pr*Dr-cr*pow(Dr,2)
+    E= tn*Dn+tr*Dr -tau*Dn
+    CS=pow(Dn,2)/2+a*Dn*Dr+a*pow(Dr,2)/2
+    W=E+CS
+    TempList=[]
+    TempList.extend([pn,pr,Dn,Dr,Pi,E, CS,W,tn,tr])
+    return TempList
+
+def W_pbnd(tn,tr,a,cn,cr,tau):
+    pn=(-a^2 + cn - (1 + 2* cr)*(-1 + tn) + tr + a *(4 + cn - 5 * tn + tr))/(2* (1 + 3 * a + cr))
+    pr=(a * (2 * a + cn + cr + tn) - (1 + 2 * a + cr) * tr)/(1 + 3 * a + cr)
+    Dn=1-((pn+tn)-(pr+tr)/(1-a)
+    Dr=(a*(pn+tn)-(pr+tr))/(a-pow(a,2))
+    Pi=(pn-cn)*Dn+pr*Dr-cr*pow(Dr,2)
+    E= tn*Dn+tr*Dr -tau*Dn
+    CS=pow(Dn,2)/2+a*Dn*Dr+a*pow(Dr,2)/2
+    W=E+CS
+    TempList=[]
+    TempList.extend([pn,pr,Dn,Dr,Pi,E, CS,W,tn,tr])
+    return TempList
+
+for a in Lalpha:
+    for cn in Lcn:
+          for crcn in Lcrcn:
+            cr=crcn*cn
+            for taucn in Ltaucn:
+                tau=taucn*cn
+                a_val.append(a)
+                cn_val.append(cn)
+                cr_val.append(cr)
+                tau_val.append(tau)
+                Final=[]
+                tnint= 1/3 * (1 - cn + 2 tau)
+                trint= (a *(3 *(-1 + a) *a - 2* cr* (2 + cn + tau)))/(9 *(-1 + a) * a - 12 *cr)
+                tnbnd= ((1 + a - cn) *(1 + 3 a + 2 cr) + 2* (1 + 3 a + cr) *tau)/(6 + 18 a + 8 cr)
+                trbnd= ((1 + a - cn) *(1 + 3 a + 2 cr) + 2* (1 + 3 a + cr) *tau)/(6 + 18 a + 8 cr)
+                if (-a^2+cr-cr * (cn+tn)+tr+a * (1-2 cn-2 tn+tr)> 0):
+                    tn=tnint
+                    tr=trint
+                    Final=W_pint(tn,tr,a,cn,cr,tau)
+                    Optimal.append('t_int') 
+                if (-a^2+cr-cr * (cn+tn)+tr+a * (1-2 cn-2 tn+tr) <= 0):
+                    tn=tnbnd
+                    tr=trbnd
+                    Final=W_pbnd(tn,tr,a,cn,cr,tau)
+                    Optimal.append('t_bnd') 
+                tn_val.append(Final[8])
+                tr_val.append(Final[9])
+                pn_val.append(Final[0])
+                pr_val.append(Final[1])
+                Dn_val.append(Final[2])
+                Dr_val.append(Final[3])
+                Pi_val.append(Final[4])
+                E_val.append(Final[5])
+                CS_val.append(Final[6])
+                W_val.append(Final[7])
+                
+                
+data['Opt']=Optimal
+data['a']=a_val
+data['cn']=cn_val
+data['cr']=cr_val
+data['tau']=tau_val
+data['tn']=tn_val
+data['tr']=tr_val
+data['pn']=pn_val
+data['pr']=pr_val
+data['Dn']=Dn_val
+data['Dr']=Dr_val
+data['Profit']=Pi_val
+data['E']=E_val
+data['CS']=CS_val
+
+frame=pd.DataFrame(data)
+frame.head()               

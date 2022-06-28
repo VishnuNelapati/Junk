@@ -1,11 +1,11 @@
 name,sport,salary,gender,age,country
 LIONEL MESSI,Soccer,130,male,34,Argentina
-LEBRON JAMES,Basketball,121,male,37,
+LEBRON JAMES,Basketball,121,male,37,U.S
 CRISTIANO RONALDO,Soccer,115,male,37,Portugal
-NEYMAR,Soccer,95,,30,Brazil
+NEYMAR,Soccer,95,male,30,Brazil
 STEPH CURRY,Basketball,93,male,34,U.S
 KEVIN DURANT,Basketball,92,male,33,U.S
-ROGER FEDERER,Tennis ,91,male,,Switzerland
+ROGER FEDERER,Tennis ,91,male,40,Switzerland
 CANELO ALVAREZ,Boxing,90,male,31,Mexico
 TOM BRADY,Football,84,male,44,U.S
 GIANNIS ANTETOKOUNMPO,Basketball,81,male,27,Greece
